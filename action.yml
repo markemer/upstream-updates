@@ -1,6 +1,6 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Update with Upstream'
+description: 'Update repo with upstream'
+author: 'Mark E. Anderson'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
@@ -9,15 +9,12 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  repo:
+    description: 'Repository Name'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  op-token:
+    description: '1Password Service Account Token'
+    required: true
 
 runs:
   using: node20
