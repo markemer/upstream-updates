@@ -1,4 +1,5 @@
 import { createClient } from '@1password/sdk'
+import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 export interface UpdateOptions {
@@ -20,6 +21,8 @@ export async function update(
   )
 
   const username = github.context.repo.owner
+  core.info(`username: ${username}`)
+
   const octokit = github.getOctokit(token)
 
   const repo_to_update = await octokit.rest.repos.get({
@@ -30,6 +33,6 @@ export async function update(
   const parent_repo_url = repo_to_update.data.parent?.clone_url
   const child_repo_url = repo_to_update.data.clone_url
 
-  console.log('parent: %s', parent_repo_url)
-  console.log('child: %s', child_repo_url)
+  core.info(`parent: ${parent_repo_url}`)
+  core.info(`child: ${child_repo_url}`)
 }
