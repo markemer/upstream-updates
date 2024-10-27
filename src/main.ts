@@ -14,6 +14,7 @@ export async function run(): Promise<void> {
     const op_token: string = core.getInput('op-token')
     const branch: string = core.getInput('branch')
 
+    core.debug(`Updating ${repo_name}:${branch} from upstream fork`)
     await update(repo_name, { token: op_token, branch: branch })
   } catch (error) {
     // Fail the workflow run if an error occurs

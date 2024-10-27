@@ -31210,6 +31210,7 @@ async function run() {
         const repo_name = core.getInput('repo');
         const op_token = core.getInput('op-token');
         const branch = core.getInput('branch');
+        core.debug(`Updating ${repo_name}:${branch} from upstream fork`);
         await (0, update_1.update)(repo_name, { token: op_token, branch: branch });
     }
     catch (error) {
@@ -31255,6 +31256,7 @@ exports.update = update;
 const sdk_1 = __nccwpck_require__(7837);
 const core = __importStar(__nccwpck_require__(7484));
 const github = __importStar(__nccwpck_require__(3228));
+const request_error_1 = __nccwpck_require__(3708);
 async function update(repo, options) {
     const client = await (0, sdk_1.createClient)({
         auth: options.token,
@@ -31264,17 +31266,35 @@ async function update(repo, options) {
     const token = await client.secrets.resolve('op://cloud/macports_update_token/credential');
     const username = github.context.repo.owner;
     const octokit = github.getOctokit(token);
-    const updated_repo = await octokit.rest.repos.mergeUpstream({
-        owner: username,
-        repo: repo,
-        branch: 'master'
-    });
-    const message = updated_repo.data.message;
-    if (typeof message == 'string') {
-        core.info(message);
+    try {
+        const updated_repo = await octokit.rest.repos.mergeUpstream({
+            owner: username,
+            repo: repo,
+            branch: options.branch
+        });
+        const message = updated_repo.data.message;
+        if (typeof message == 'string') {
+            core.info(message);
+        }
+        else {
+            core.warning('No message from merge');
+        }
     }
-    else {
-        core.warning('No message from merge');
+    catch (error) {
+        if (error instanceof request_error_1.RequestError) {
+            switch (error.status) {
+                case 409:
+                    core.setFailed('Merge Conflict with Upstream');
+                    break;
+                default:
+                    core.setFailed(error.message);
+                    break;
+            }
+        }
+        else {
+            if (error instanceof Error)
+                core.setFailed(error.message);
+        }
     }
 }
 
