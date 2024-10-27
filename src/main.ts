@@ -1,8 +1,7 @@
 import * as core from '@actions/core'
 
-import { update, UpdateOptions } from './update'
+import { update } from './update'
 
-const ACTION_VERSION = '0.1.0'
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.

@@ -31200,7 +31200,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(7484));
 const update_1 = __nccwpck_require__(6082);
-const ACTION_VERSION = '0.1.0';
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
