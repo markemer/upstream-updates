@@ -4,8 +4,8 @@ author: 'Mark E. Anderson'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'git-merge'
+  color: 'purple'
 
 # Define your inputs here.
 inputs:
@@ -15,6 +15,9 @@ inputs:
   op-token:
     description: '1Password Service Account Token'
     required: true
+  branch:
+    description: 'Branch to update'
+    default: 'main'
 
 runs:
   using: node20

@@ -4,6 +4,7 @@ import * as github from '@actions/github'
 
 export interface UpdateOptions {
   token: string
+  branch: string
 }
 
 export async function update(

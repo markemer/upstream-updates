@@ -31209,7 +31209,8 @@ async function run() {
         core.setSecret('op-token');
         const repo_name = core.getInput('repo');
         const op_token = core.getInput('op-token');
-        await (0, update_1.update)(repo_name, { token: op_token });
+        const branch = core.getInput('branch');
+        await (0, update_1.update)(repo_name, { token: op_token, branch: branch });
     }
     catch (error) {
         // Fail the workflow run if an error occurs
