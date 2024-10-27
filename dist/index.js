@@ -31262,16 +31262,19 @@ async function update(repo, options) {
     });
     const token = await client.secrets.resolve('op://cloud/macports_update_token/credential');
     const username = github.context.repo.owner;
-    core.info(`username: ${username}`);
     const octokit = github.getOctokit(token);
-    const repo_to_update = await octokit.rest.repos.get({
+    const updated_repo = await octokit.rest.repos.mergeUpstream({
         owner: username,
-        repo: repo
+        repo: repo,
+        branch: 'master'
     });
-    const parent_repo_url = repo_to_update.data.parent?.clone_url;
-    const child_repo_url = repo_to_update.data.clone_url;
-    core.info(`parent: ${parent_repo_url}`);
-    core.info(`child: ${child_repo_url}`);
+    const message = updated_repo.data.message;
+    if (typeof message == 'string') {
+        core.info(message);
+    }
+    else {
+        core.warning('No message from merge');
+    }
 }
 
 
